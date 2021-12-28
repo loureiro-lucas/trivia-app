@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import fetchQuestions from '../services';
+import React, { useContext, useState } from 'react';
+import TriviaContext from '../context/TriviaContext';
 
-const Home = () => {
+const Home = ({ history }) => {
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
   const [isNumberOfQuestionsChoosen, setIsNumberOfQuestionsChoosen] = useState(false);
+  const { getQuestions } = useContext(TriviaContext);
 
   const handleChange = ({ target: { value } }) => setNumberOfQuestions(value);
 
@@ -13,7 +14,8 @@ const Home = () => {
   };
 
   const startGame = () => {
-    console.log('começar')
+    getQuestions(numberOfQuestions);
+    history.push('./game');
   }
 
   const cancelGame = () => {
