@@ -6,7 +6,7 @@ import Home from '../pages/Home';
 const Routes = () => (
   <>
     <Route exact path="/" render={ (props) => <Home { ...props } /> } />
-    <Route path="/game" render={ () => <Game /> } />
+    <Route path="/game" render={ (props) => <Game { ...props } /> } />
   </>
 );
 
