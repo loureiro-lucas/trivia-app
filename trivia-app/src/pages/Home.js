@@ -1,21 +1,37 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TriviaContext from '../context/TriviaContext';
 
 const Home = ({ history }) => {
-  const [numberOfQuestions, setNumberOfQuestions] = useState(0);
   const [isNumberOfQuestionsChoosen, setIsNumberOfQuestionsChoosen] = useState(false);
-  const { getQuestions } = useContext(TriviaContext);
+
+  const {
+    setQuestions,
+    numberOfQuestions,
+    setNumberOfQuestions,
+    getQuestions,
+    setQuestionsAnswered,
+    setScore,
+  } = useContext(TriviaContext);
+
+  useEffect(() => {
+    setQuestions([]);
+    setNumberOfQuestions(0);
+    setQuestionsAnswered([]);
+    setScore(0);
+  }, [])
 
   const handleChange = ({ target: { value } }) => setNumberOfQuestions(value);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsNumberOfQuestionsChoosen(true);
-  };
+  }
 
   const startGame = () => {
-    getQuestions(numberOfQuestions);
-    history.push('./game');
+    getQuestions(numberOfQuestions)
+      .then(() => {
+        history.push('./game');
+      });
   }
 
   const cancelGame = () => {
@@ -56,7 +72,7 @@ const Home = ({ history }) => {
       <h1>Responda se puder!</h1>
       { isNumberOfQuestionsChoosen ? renderConfirmation() : renderForm() }
     </>
-  )
+  );
 }
 
 export default Home;
