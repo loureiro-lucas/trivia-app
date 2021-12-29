@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import TriviaContext from '../context/TriviaContext';
 
 const Header = () => {
+  const {score} = useContext(TriviaContext); 
+
   return (
     <div>
       <h1>Responda se puder!</h1>
       <div>
-        <p>Placar: x pontos</p>
+        <p>
+          {
+            score === 0
+            ? 'Você ainda não acertou nenhuma pergunta :/'
+            : `Você já acertou ${score} ${score === 1 ? 'pergunta' : 'perguntas'}!`
+          }
+        </p>
       </div>
     </div>
   )
