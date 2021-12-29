@@ -1,13 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
-import TriviaContext from '../context/TriviaContext';
 
 const Feedback = () => {
-  const {
-    questionsAnswered,
-    score,
-    numberOfQuestions,
-  } = useContext(TriviaContext);
+  const [gameResults, setGameResults] = useState({ numberOfQuestions: 0, questionsAnswered: [], score: 0 })
+  const { numberOfQuestions, questionsAnswered, score } = gameResults;
+
+  useEffect(() => {
+    getGameResultsFromStorage();
+  }, []);
+
+  const getGameResultsFromStorage = () => {
+    const lastGameResults = JSON.parse(localStorage.getItem('lastGame'));
+    setGameResults(lastGameResults);
+  }
 
   const renderScore = () => (
     <div className="feedback-score-container">
