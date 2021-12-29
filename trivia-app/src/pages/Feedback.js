@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 
-const Feedback = () => {
+const Feedback = ({ history }) => {
   const [gameResults, setGameResults] = useState({ numberOfQuestions: 0, questionsAnswered: [], score: 0 })
   const { numberOfQuestions, questionsAnswered, score } = gameResults;
 
@@ -64,6 +64,9 @@ const Feedback = () => {
             return renderQuestionFeedback(questionAnswered, index);
           })
         }
+        <button type="button" onClick={ () => history.push('/') }>
+          Jogar novamente!
+        </button>
       </div>
     </>
   )
