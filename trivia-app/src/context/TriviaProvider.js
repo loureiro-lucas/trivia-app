@@ -5,7 +5,8 @@ import fetchQuestions from '../services';
 const TriviaProvider = ({ children }) => {
   const [questions, setQuestions] = useState([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
-  // const [answered, setAnswered] = useState({});
+  const [questionsAnswered, setQuestionsAnswered] = useState([]);
+  const [score, setScore] = useState(0);
 
   const getQuestions = (numberOfQuestions) => {
     return fetchQuestions(numberOfQuestions)
@@ -13,10 +14,15 @@ const TriviaProvider = ({ children }) => {
   }
 
   const context = {
+    setQuestions,
     numberOfQuestions,
     setNumberOfQuestions,
     getQuestions,
     questions,
+    questionsAnswered,
+    setQuestionsAnswered,
+    score,
+    setScore,
   };
 
   return (

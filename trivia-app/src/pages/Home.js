@@ -1,9 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TriviaContext from '../context/TriviaContext';
 
 const Home = ({ history }) => {
   const [isNumberOfQuestionsChoosen, setIsNumberOfQuestionsChoosen] = useState(false);
-  const { numberOfQuestions, setNumberOfQuestions, getQuestions } = useContext(TriviaContext);
+
+  const {
+    setQuestions,
+    numberOfQuestions,
+    setNumberOfQuestions,
+    getQuestions,
+    setQuestionsAnswered,
+    setScore,
+  } = useContext(TriviaContext);
+
+  useEffect(() => {
+    setQuestions([]);
+    setNumberOfQuestions(0);
+    setQuestionsAnswered([]);
+    setScore(0);
+  }, [])
 
   const handleChange = ({ target: { value } }) => setNumberOfQuestions(value);
 
