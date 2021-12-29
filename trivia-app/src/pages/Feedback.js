@@ -7,8 +7,8 @@ const Feedback = () => {
     questionsAnswered,
   } = useContext(TriviaContext);
 
-  const renderQuestionFeedback = ({ questionText, answerChosen, correct_answer }) => (
-    <div className="feedback-question-container">
+  const renderQuestionFeedback = ({ questionText, answerChosen, correct_answer }, index) => (
+    <div className="feedback-question-container" key={ index }>
       <p className="feedback-question-text">
         { questionText }
       </p>
@@ -25,7 +25,11 @@ const Feedback = () => {
     <>
       <Header />
       <div className="feedback-page-container">
-
+        {
+          questionsAnswered.map((questionAnswered, index) => {
+            return renderQuestionFeedback(questionAnswered, index);
+          })
+        }
       </div>
     </>
   )
