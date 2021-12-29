@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TriviaContext from './TriviaContext';
 import fetchQuestions from '../services';
+import PropTypes from 'prop-types';
 
 const TriviaProvider = ({ children }) => {
   const [questions, setQuestions] = useState([]);
@@ -31,5 +32,9 @@ const TriviaProvider = ({ children }) => {
     </TriviaContext.Provider>
   );
 }
+
+TriviaProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default TriviaProvider;

@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import TriviaContext from '../context/TriviaContext';
+import PropTypes from 'prop-types';
 
 const Home = ({ history }) => {
   const [isNumberOfQuestionsChoosen, setIsNumberOfQuestionsChoosen] = useState(false);
+  const [isLastGameResultsButtonDisabled, setIsLastGameResultsButtonDisabled] = useState(true)
 
   const {
     setQuestions,
@@ -18,6 +20,7 @@ const Home = ({ history }) => {
     setNumberOfQuestions(0);
     setQuestionsAnswered([]);
     setScore(0);
+    checkForPreviousGame();
   }, [])
 
   const handleChange = ({ target: { value } }) => setNumberOfQuestions(value);
@@ -67,12 +70,38 @@ const Home = ({ history }) => {
     </>
   );
 
+  const checkForPreviousGame = () => {
+    const lastGameResults = JSON.parse(localStorage.getItem('lastGame'));
+    if (lastGameResults) {
+      setIsLastGameResultsButtonDisabled(false);
+    } else {
+      setIsLastGameResultsButtonDisabled(true);
+    }
+  }
+
+  const renderLastGameFeedbackButton = () => (
+    <button
+      type="button"
+      onClick={ () => history.push('/feedback') }
+      disabled={ isLastGameResultsButtonDisabled }
+    >
+      Ver resultados do jogo anterior
+    </button>
+  )
+
   return (
-    <>
+    <div className="homepage-container">
       <h1>Responda se puder!</h1>
       { isNumberOfQuestionsChoosen ? renderConfirmation() : renderForm() }
-    </>
+      { renderLastGameFeedbackButton() }
+    </div>
   );
 }
+
+Home.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Home;

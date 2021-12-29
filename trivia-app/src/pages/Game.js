@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import TriviaContext from '../context/TriviaContext';
+import PropTypes from 'prop-types';
 
 const Game = ({ history }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestionAnswers, setCurrentQuestionAnswers] = useState([]);
-  const [currentAnswer, setCurrentAnswer] = useState({questionText: '', answerChosen: ''});
   const [isNextAndFinishButtonsDisabled, setIsNextAndFinishButtonsDisabled] = useState(true);
   const [isAnswersDisabled, setIsAnswersDisabled] = useState(false);
 
@@ -33,25 +33,10 @@ const Game = ({ history }) => {
     setCurrentQuestionAnswers(answersRandomized);
   }
 
-  const handleScore = (chosen, correct) => {
-    chosen === correct && setScore(score + 1);
-  }
-  
-  const answerQuestion = () => {
-    const { questionText, answerChosen } = currentAnswer;
-    const { correct_answer } = questions[currentQuestionIndex];
-    
-    handleScore(answerChosen, correct_answer);
-    
-    setQuestionsAnswered([
-      ...questionsAnswered,
-      { questionText, answerChosen, correct_answer },
-    ]);
-    
-    setCurrentAnswer({
-      questionText: '',
-      answerChosen: '',
-    });
+  const handleNextButton = () => {
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    setIsAnswersDisabled(false);
+    setIsNextAndFinishButtonsDisabled(true);
   }
 
   const renderNextButton = () => (
@@ -60,11 +45,20 @@ const Game = ({ history }) => {
     </button>
   );
 
-  const handleNextButton = () => {
-    answerQuestion();
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  const saveGameToStorage = () => {
+    const game = JSON.stringify({
+      numberOfQuestions,
+      score,
+      questionsAnswered
+    });
+    localStorage.setItem('lastGame', game);
+  }
+
+  const handleFinishButton = () => {
     setIsAnswersDisabled(false);
     setIsNextAndFinishButtonsDisabled(true);
+    saveGameToStorage();
+    history.push('/feedback');
   }
 
   const renderFinishButton = () => (
@@ -72,13 +66,6 @@ const Game = ({ history }) => {
       Ver resultado
     </button>
   );
-
-  const handleFinishButton = () => {
-    answerQuestion();
-    setIsAnswersDisabled(false);
-    setIsNextAndFinishButtonsDisabled(true);
-    history.push('/feedback');
-  }
 
   const renderAnswers = () => (
     currentQuestionAnswers.map((answer, index) => (
@@ -94,12 +81,25 @@ const Game = ({ history }) => {
     ))
   );
 
-  const handleClickAnswer = ({ target }) => {
-    setCurrentAnswer({
-      questionText: questions[currentQuestionIndex].question,
-      answerChosen: target.name,
-    });
+  const handleScore = (chosen, correct) => {
+    chosen === correct && setScore(score + 1);
+  }
 
+  const answerQuestion = (answerChosen) => {
+    const { correct_answer, question: questionText } = questions[currentQuestionIndex];
+
+    handleScore(answerChosen, correct_answer);
+
+    setQuestionsAnswered([
+      ...questionsAnswered,
+      { questionText, answerChosen, correct_answer },
+    ]);
+  }
+
+  const handleClickAnswer = ({ target }) => {
+    const answerChosen = target.name;
+
+    answerQuestion(answerChosen);
     setIsAnswersDisabled(true);
     setIsNextAndFinishButtonsDisabled(false);
   }
@@ -124,5 +124,11 @@ const Game = ({ history }) => {
     </>
   )
 }
+
+Game.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Game;
