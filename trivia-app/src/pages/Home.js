@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import TriviaContext from '../context/TriviaContext';
+import PropTypes from 'prop-types';
 
 const Home = ({ history }) => {
   const [isNumberOfQuestionsChoosen, setIsNumberOfQuestionsChoosen] = useState(false);
@@ -96,5 +97,11 @@ const Home = ({ history }) => {
     </div>
   );
 }
+
+Home.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Home;

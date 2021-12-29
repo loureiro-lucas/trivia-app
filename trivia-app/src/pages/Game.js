@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import TriviaContext from '../context/TriviaContext';
+import PropTypes from 'prop-types';
 
 const Game = ({ history }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -123,5 +124,11 @@ const Game = ({ history }) => {
     </>
   )
 }
+
+Game.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Game;

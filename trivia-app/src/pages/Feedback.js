@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
+import PropTypes from 'prop-types';
 
 const Feedback = ({ history }) => {
   const [gameResults, setGameResults] = useState({ numberOfQuestions: 0, questionsAnswered: [], score: 0 })
@@ -71,5 +72,11 @@ const Feedback = ({ history }) => {
     </>
   )
 }
+
+Feedback.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 export default Feedback;
