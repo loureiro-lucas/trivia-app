@@ -84,7 +84,7 @@ const Home = ({ history }) => {
           helperText={ numberOfQuestionsError && 'Campo obrigatório' }
           fullWidth
           required
-          sx={{ mr: 0.5}}
+          sx={{ mr: 1}}
         />
 
         <Button
@@ -105,14 +105,14 @@ const Home = ({ history }) => {
         variant="h6"
         component="h2"
         align="center"
-        sx={{ pb: "15px" }}
+        sx={{ pb: 2 }}
       >
         Iniciar jogo?
       </Typography>
 
       <ButtonGroup
         fullWidth
-        sx={{ mb: "15px" }}
+        sx={{ mb: 2 }}
       >
         <Button
           type="button"
@@ -170,7 +170,7 @@ const Home = ({ history }) => {
         variant="h4"
         component="h1"
         align="center"
-        sx={{ pb: "30px" }}
+        sx={{ mb: "30px" }}
       >
         Responda se puder!
       </Typography>
