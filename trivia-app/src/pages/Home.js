@@ -1,10 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import TriviaContext from '../context/TriviaContext';
 import PropTypes from 'prop-types';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField';
+import '../Styles/Home.css';
 
 const Home = ({ history }) => {
   const [isNumberOfQuestionsChoosen, setIsNumberOfQuestionsChoosen] = useState(false);
   const [isLastGameResultsButtonDisabled, setIsLastGameResultsButtonDisabled] = useState(true)
+  const [numberOfQuestionsError, setNumberOfQuestionsError] = useState(false);
 
   const {
     setQuestions,
@@ -17,17 +24,33 @@ const Home = ({ history }) => {
 
   useEffect(() => {
     setQuestions([]);
-    setNumberOfQuestions(0);
+    setNumberOfQuestions();
     setQuestionsAnswered([]);
     setScore(0);
     checkForPreviousGame();
+    setNumberOfQuestionsError(false);
   }, [])
 
   const handleChange = ({ target: { value } }) => setNumberOfQuestions(value);
 
+  const validateNumberOfQuestions = () => {
+    let isValid = false;
+    if (numberOfQuestions) {
+      setNumberOfQuestionsError(false);
+      isValid = true;
+    } else {
+      setNumberOfQuestionsError(true);
+      isValid = false;
+    }
+    return isValid;
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    setIsNumberOfQuestionsChoosen(true);
+
+    if (validateNumberOfQuestions()) {
+      setIsNumberOfQuestionsChoosen(true);
+    };
   }
 
   const startGame = () => {
@@ -42,32 +65,73 @@ const Home = ({ history }) => {
   }
 
   const renderForm = () => (
-    <form onSubmit={ handleSubmit }>
-      <label htmlFor='number-of-questions'>
-        Quantas perguntas você deseja responder?
-        <input
-          type="number"
+    <form
+      onSubmit={ handleSubmit }
+      autoComplete="off"
+      noValidate
+      className="number-of-questions-form"
+    >
+      <Container fullWidth sx={{ display: "flex", mb: "15px" }}>
+        <TextField
           id="number-of-questions"
+          name="number-of-questions"
+          label="Quantas perguntas você deseja responder?"
+          variant="outlined"
+          size="small"
           value={ numberOfQuestions }
           onChange={ handleChange }
+          error={ numberOfQuestionsError }
+          helperText={ numberOfQuestionsError && 'Campo obrigatório' }
+          fullWidth
+          required
+          sx={{ mr: 0.5}}
         />
-      </label>
-      <button type="submit">
-        Enviar
-      </button>
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={{ height: "40px" }}
+        >
+          Confirmar
+        </Button>
+      </Container>
     </form>
   );
 
   const renderConfirmation = () => (
-    <>
-      <p>Iniciar jogo?</p>
-      <button type="button" onClick={ startGame }>
-        Start
-      </button>
-      <button type="button" onClick={ cancelGame }>
-        Cancel
-      </button>
-    </>
+    <Container>
+      <Typography
+        variant="h6"
+        component="h2"
+        align="center"
+        sx={{ pb: "15px" }}
+      >
+        Iniciar jogo?
+      </Typography>
+
+      <ButtonGroup
+        fullWidth
+        sx={{ mb: "15px" }}
+      >
+        <Button
+          type="button"
+          onClick={ startGame }
+          color="primary"
+          variant="contained"
+        >
+          Start
+        </Button>
+        <Button
+          type="button"
+          onClick={ cancelGame }
+          color="error"
+          variant="contained"
+        >
+          Cancel
+        </Button>
+      </ButtonGroup>
+    </Container>
   );
 
   const checkForPreviousGame = () => {
@@ -80,21 +144,41 @@ const Home = ({ history }) => {
   }
 
   const renderLastGameFeedbackButton = () => (
-    <button
+    <Button
       type="button"
       onClick={ () => history.push('/feedback') }
       disabled={ isLastGameResultsButtonDisabled }
+      sx={{ width: "275px", mx: "auto" }}
     >
       Ver resultados do jogo anterior
-    </button>
+    </Button>
   )
 
   return (
-    <div className="homepage-container">
-      <h1>Responda se puder!</h1>
+    <Container
+      maxWidth="sm"
+      sx={{
+        mt: "25vh",
+        height: "200px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <Typography
+        variant="h4"
+        component="h1"
+        align="center"
+        sx={{ pb: "30px" }}
+      >
+        Responda se puder!
+      </Typography>
+
       { isNumberOfQuestionsChoosen ? renderConfirmation() : renderForm() }
+
       { renderLastGameFeedbackButton() }
-    </div>
+    </Container>
   );
 }
 
