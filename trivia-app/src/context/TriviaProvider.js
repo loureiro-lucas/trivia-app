@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const TriviaProvider = ({ children }) => {
   const [questions, setQuestions] = useState([]);
-  const [numberOfQuestions, setNumberOfQuestions] = useState(0);
+  const [numberOfQuestions, setNumberOfQuestions] = useState();
   const [questionsAnswered, setQuestionsAnswered] = useState([]);
   const [score, setScore] = useState(0);
 

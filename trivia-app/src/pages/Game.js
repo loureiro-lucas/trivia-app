@@ -2,6 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import TriviaContext from '../context/TriviaContext';
 import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import LinearProgress from '@mui/material/LinearProgress';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 
 const Game = ({ history }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -12,6 +17,7 @@ const Game = ({ history }) => {
   const {
     questions,
     numberOfQuestions,
+    setNumberOfQuestions,
     questionsAnswered,
     setQuestionsAnswered,
     score,
@@ -40,9 +46,18 @@ const Game = ({ history }) => {
   }
 
   const renderNextButton = () => (
-    <button type="button" onClick={ handleNextButton } disabled={ isNextAndFinishButtonsDisabled }>
+    <Button
+      variant="contained"
+      color="success"
+      type="button"
+      onClick={ handleNextButton }
+      disabled={ isNextAndFinishButtonsDisabled }
+      sx={{
+        mt: 3,
+      }}
+    >
       Próxima pergunta
-    </button>
+    </Button>
   );
 
   const saveGameToStorage = () => {
@@ -62,22 +77,33 @@ const Game = ({ history }) => {
   }
 
   const renderFinishButton = () => (
-    <button type="button" onClick={ handleFinishButton } disabled={ isNextAndFinishButtonsDisabled }>
+    <Button
+      variant="contained"
+      color="secondary"
+      type="button"
+      onClick={ handleFinishButton }
+      disabled={ isNextAndFinishButtonsDisabled }
+      sx={{
+        mt: 3,
+      }}
+    >
       Ver resultado
-    </button>
+    </Button>
   );
 
   const renderAnswers = () => (
     currentQuestionAnswers.map((answer, index) => (
-      <button
+      <Button
         key={ index }
         type="button"
         name={ answer }
         onClick={ handleClickAnswer }
         disabled={ isAnswersDisabled }
+        variant="contained"
+        sx={{ my: 0.25 }}
       >
         { answer }
-      </button>
+      </Button>
     ))
   );
 
@@ -104,23 +130,83 @@ const Game = ({ history }) => {
     setIsNextAndFinishButtonsDisabled(false);
   }
 
+  const renderQuestionsCounter = () => {
+    const SECONDS_TO_PERCENTAGE = 100 / numberOfQuestions;
+    return (
+      <div>
+        <LinearProgress
+          variant="determinate"
+          color="secondary"
+          value={ (currentQuestionIndex) * SECONDS_TO_PERCENTAGE }
+        />
+        <Typography
+          variant="h5"
+          color="secondary"
+          id="counter-text"
+          align="center"
+        >
+          {`${currentQuestionIndex + 1} de ${numberOfQuestions}`}
+        </Typography>
+      </div>
+    );
+  }
+
+  const handlePlayAgainButton = () => {
+    setNumberOfQuestions();
+    history.push('/');
+  }
+
   return (
     <>
       <Header />
-      <div className="game-page-container">
+      { renderQuestionsCounter() }
+      <Container
+        sx={{
+          mt: "15vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         {questions.length > 0
         && (
-          <div className="question-container">
-            <p className="question-text">
+          <Container align="center">
+            <Typography
+              variant="h5"
+              component="p"
+              align="center"
+              sx={{
+                mb: 2,
+              }}
+            >
               { questions[currentQuestionIndex].question }
-            </p>
-            <div className="question-answers">
+            </Typography>
+            <Container sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}>
               { renderAnswers() }
-            </div>
-          </div>
+            </Container>
+          </Container>
         )}
         { currentQuestionIndex < numberOfQuestions -1 ? renderNextButton() : renderFinishButton() }
-      </div>
+        <Button
+          type="button"
+          variant="outlined"
+          color="secondary"
+          onClick={ handlePlayAgainButton }
+          endIcon={ <ReplayRoundedIcon />}
+          sx={{
+            mt: 4,
+            backgroundColor: "#eaf5ff",
+          }}
+        >
+          Voltar para o início
+        </Button>
+      </Container>
     </>
   )
 }
