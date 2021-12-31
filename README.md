@@ -1,5 +1,7 @@
-# Trivia App
-Essa aplicação é um jogo de **perguntas e respostas**, com a . Dentre as funcionalidades estão:
+# Trivia App: Responda se puder!
+Essa aplicação é um jogo de **perguntas e respostas**, cujos dados foram obtidos da API do [Open Trivia Database](https://opentdb.com/).
+
+Dentre as funcionalidades estão:
 - possibilidade de seleccionar previamente a quantidade de perguntas a respoder;
 - placar dinâmico no header durante o jogo;
 - relatório com placar, erros e acertos no final do jogo;
