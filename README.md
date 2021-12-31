@@ -1,5 +1,5 @@
 # Trivia App: Responda se puder!
-Essa aplicação é um jogo de **perguntas e respostas**, cujos dados são obtidos da API do [Open Trivia Database](https://opentdb.com/).
+Essa aplicação é um jogo de **perguntas e respostas**, cujos dados são obtidos da `API` do [Open Trivia Database](https://opentdb.com/).
 
 Dentre as funcionalidades estão:
 - possibilidade de seleccionar previamente a quantidade de perguntas a respoder;
