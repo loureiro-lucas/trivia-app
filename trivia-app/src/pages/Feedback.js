@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../components/Header';
+import React, { useContext, useEffect, useState } from 'react';
+import TriviaContext from '../context/TriviaContext';
 import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 
 const Feedback = ({ history }) => {
   const [gameResults, setGameResults] = useState({ numberOfQuestions: 0, questionsAnswered: [], score: 0 })
   const { numberOfQuestions, questionsAnswered, score } = gameResults;
+
+  const { setNumberOfQuestions } = useContext(TriviaContext);
 
   useEffect(() => {
     getGameResultsFromStorage();
@@ -16,60 +22,106 @@ const Feedback = ({ history }) => {
   }
 
   const renderScore = () => (
-    <div className="feedback-score-container">
-      <p>
+    <Container
+      align="center"
+      sx={{
+        width: "300px",
+        border: "2px solid #a629cc",
+        borderRadius: "10px",
+        py: 1,
+        my: 5,
+        backgroundColor: "#fff",
+      }}>
+      <Typography variant="h6" component="p" color="secondary">
         {
           `${numberOfQuestions} ${numberOfQuestions === 1
             ? 'pergunta respondida'
             : 'perguntas respondidas'}...`
         }
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="h6" component="p" color="#1B9a02">
         {
           `${score} ${score === 1
             ? 'acerto.'
             : 'acertos.'}`
         }
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="h6" component="p" color="error">
         {
           `${numberOfQuestions - score} ${numberOfQuestions - score === 1
             ? 'erro.'
             : 'erros.'}`
         }
-      </p>
-    </div>
+      </Typography>
+    </Container>
   );
 
   const renderQuestionFeedback = ({ questionText, answerChosen, correct_answer }, index) => (
-    <div className="feedback-question-container" key={ index }>
-      <p className="feedback-question-text">
+    <Container
+      className="feedback-question-container"
+      key={ index }
+      align="center"
+      sx={{
+        border: "2px solid #1565C0",
+        borderRadius: "10px",
+        my: 1,
+        py: 1,
+        backgroundColor: "#fff"
+      }}
+    >
+      <Typography
+        variant="h6"
+        component="p"
+        color="primary"
+      >
         { questionText }
-      </p>
-      <p className="feedback-question-answer-chosen">
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        component="p"
+        color={ answerChosen === correct_answer ? "#1B9a02" : "error" }
+      >
         Sua resposta:{ ` ${answerChosen}` }
-      </p>
-      <p className="feedback-question-correct-answer">
+      </Typography>
+      <Typography
+        variant="subtitle1"
+        component="p"
+        color={ answerChosen === correct_answer ? "#1B9a02" : "error" }
+      >
         Resposta correta:{ ` ${correct_answer}` }
-      </p>
-    </div>
+      </Typography>
+    </Container>
   );
   
+  const handlePlayAgainButton = () => {
+    setNumberOfQuestions();
+    history.push('/');
+  }
+
   return (
-    <>
-      <Header />
-      <div className="feedback-page-container">
-        { renderScore() }
-        {
-          questionsAnswered.map((questionAnswered, index) => {
-            return renderQuestionFeedback(questionAnswered, index);
-          })
-        }
-        <button type="button" onClick={ () => history.push('/') }>
-          Jogar novamente!
-        </button>
-      </div>
-    </>
+    <Container align="center">
+      <Typography variant="h4" component="h1" color="secondary" sx={{ my: 7}}>
+        Resultados do último jogo
+      </Typography>
+      { renderScore() }
+      {
+        questionsAnswered.map((questionAnswered, index) => {
+          return renderQuestionFeedback(questionAnswered, index);
+        })
+      }
+      <Button
+        type="button"
+        variant="contained"
+        color="secondary"
+        onClick={ handlePlayAgainButton }
+        endIcon={ <ReplayRoundedIcon />}
+        sx={{
+          mt: 4,
+        }}
+      >
+        Jogar novamente!
+      </Button>
+    </Container>
   )
 }
 

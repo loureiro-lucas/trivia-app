@@ -6,7 +6,9 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import '../Styles/Home.css';
+import SportsEsportsRoundedIcon from '@mui/icons-material/SportsEsportsRounded';
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 const Home = ({ history }) => {
   const [isNumberOfQuestionsChoosen, setIsNumberOfQuestionsChoosen] = useState(false);
@@ -31,11 +33,11 @@ const Home = ({ history }) => {
     setNumberOfQuestionsError(false);
   }, [])
 
-  const handleChange = ({ target: { value } }) => setNumberOfQuestions(value);
+  const handleChange = ({ target: { value } }) => setNumberOfQuestions(Number(value));
 
   const validateNumberOfQuestions = () => {
     let isValid = false;
-    if (numberOfQuestions) {
+    if (numberOfQuestions && numberOfQuestions !== 0 && numberOfQuestions < 101) {
       setNumberOfQuestionsError(false);
       isValid = true;
     } else {
@@ -62,6 +64,7 @@ const Home = ({ history }) => {
 
   const cancelGame = () => {
     setIsNumberOfQuestionsChoosen(false);
+    setNumberOfQuestions();
   }
 
   const renderForm = () => (
@@ -70,9 +73,11 @@ const Home = ({ history }) => {
       autoComplete="off"
       noValidate
       className="number-of-questions-form"
+      style={{ width: "100%" }}
     >
       <Container fullWidth sx={{ display: "flex", mb: "15px" }}>
         <TextField
+          type="number"
           id="number-of-questions"
           name="number-of-questions"
           label="Quantas perguntas você deseja responder?"
@@ -81,7 +86,7 @@ const Home = ({ history }) => {
           value={ numberOfQuestions }
           onChange={ handleChange }
           error={ numberOfQuestionsError }
-          helperText={ numberOfQuestionsError && 'Campo obrigatório' }
+          helperText={ numberOfQuestionsError && 'Campo obrigatório / deve ser um número entre 1 e 100.' }
           fullWidth
           required
           sx={{ mr: 1}}
@@ -91,7 +96,8 @@ const Home = ({ history }) => {
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ height: "40px" }}
+          sx={{ height: "40px", px: 3}}
+          endIcon={ <CheckRoundedIcon /> }
         >
           Confirmar
         </Button>
@@ -104,6 +110,7 @@ const Home = ({ history }) => {
       <Typography
         variant="h6"
         component="h2"
+        color="primary"
         align="center"
         sx={{ pb: 2 }}
       >
@@ -119,6 +126,7 @@ const Home = ({ history }) => {
           onClick={ startGame }
           color="primary"
           variant="contained"
+          endIcon={ <SportsEsportsRoundedIcon /> }
         >
           Start
         </Button>
@@ -127,6 +135,7 @@ const Home = ({ history }) => {
           onClick={ cancelGame }
           color="error"
           variant="contained"
+          endIcon={ <CancelRoundedIcon /> }
         >
           Cancel
         </Button>
@@ -146,6 +155,7 @@ const Home = ({ history }) => {
   const renderLastGameFeedbackButton = () => (
     <Button
       type="button"
+      color="secondary"
       onClick={ () => history.push('/feedback') }
       disabled={ isLastGameResultsButtonDisabled }
       sx={{ width: "275px", mx: "auto" }}
@@ -169,6 +179,7 @@ const Home = ({ history }) => {
       <Typography
         variant="h4"
         component="h1"
+        color="primary"
         align="center"
         sx={{ mb: "30px" }}
       >

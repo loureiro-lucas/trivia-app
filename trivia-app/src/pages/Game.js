@@ -2,7 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import TriviaContext from '../context/TriviaContext';
 import PropTypes from 'prop-types';
-import { Button, Container, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import LinearProgress from '@mui/material/LinearProgress';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
 
 const Game = ({ history }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -13,6 +17,7 @@ const Game = ({ history }) => {
   const {
     questions,
     numberOfQuestions,
+    setNumberOfQuestions,
     questionsAnswered,
     setQuestionsAnswered,
     score,
@@ -74,7 +79,7 @@ const Game = ({ history }) => {
   const renderFinishButton = () => (
     <Button
       variant="contained"
-      color="success"
+      color="secondary"
       type="button"
       onClick={ handleFinishButton }
       disabled={ isNextAndFinishButtonsDisabled }
@@ -125,9 +130,36 @@ const Game = ({ history }) => {
     setIsNextAndFinishButtonsDisabled(false);
   }
 
+  const renderQuestionsCounter = () => {
+    const SECONDS_TO_PERCENTAGE = 100 / numberOfQuestions;
+    return (
+      <div>
+        <LinearProgress
+          variant="determinate"
+          color="secondary"
+          value={ (currentQuestionIndex) * SECONDS_TO_PERCENTAGE }
+        />
+        <Typography
+          variant="h5"
+          color="secondary"
+          id="counter-text"
+          align="center"
+        >
+          {`${currentQuestionIndex + 1} de ${numberOfQuestions}`}
+        </Typography>
+      </div>
+    );
+  }
+
+  const handlePlayAgainButton = () => {
+    setNumberOfQuestions();
+    history.push('/');
+  }
+
   return (
     <>
       <Header />
+      { renderQuestionsCounter() }
       <Container
         sx={{
           mt: "15vh",
@@ -161,6 +193,19 @@ const Game = ({ history }) => {
           </Container>
         )}
         { currentQuestionIndex < numberOfQuestions -1 ? renderNextButton() : renderFinishButton() }
+        <Button
+          type="button"
+          variant="outlined"
+          color="secondary"
+          onClick={ handlePlayAgainButton }
+          endIcon={ <ReplayRoundedIcon />}
+          sx={{
+            mt: 4,
+            backgroundColor: "#eaf5ff",
+          }}
+        >
+          Voltar para o início
+        </Button>
       </Container>
     </>
   )
