@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/trivia-app/static/css/main.a44d08cf.css",
+    "main.js": "/trivia-app/static/js/main.6a0f7587.js",
+    "static/media/blob-scene-haikei.svg": "/trivia-app/static/media/blob-scene-haikei.52064ef710cfe1369afc.svg",
+    "index.html": "/trivia-app/index.html",
+    "main.a44d08cf.css.map": "/trivia-app/static/css/main.a44d08cf.css.map",
+    "main.6a0f7587.js.map": "/trivia-app/static/js/main.6a0f7587.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a44d08cf.css",
+    "static/js/main.6a0f7587.js"
+  ]
+}
