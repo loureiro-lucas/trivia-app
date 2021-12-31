@@ -116,7 +116,7 @@ const Feedback = ({ history }) => {
         onClick={ handlePlayAgainButton }
         endIcon={ <ReplayRoundedIcon />}
         sx={{
-          mt: 4,
+          my: 4,
         }}
       >
         Jogar novamente!
