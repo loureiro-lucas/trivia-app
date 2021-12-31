@@ -26,7 +26,7 @@ const Home = ({ history }) => {
 
   useEffect(() => {
     setQuestions([]);
-    setNumberOfQuestions();
+    setNumberOfQuestions(0);
     setQuestionsAnswered([]);
     setScore(0);
     checkForPreviousGame();
@@ -75,7 +75,7 @@ const Home = ({ history }) => {
       className="number-of-questions-form"
       style={{ width: "100%" }}
     >
-      <Container fullWidth sx={{ display: "flex", mb: "15px" }}>
+      <Container sx={{ display: "flex", mb: "15px" }}>
         <TextField
           type="number"
           id="number-of-questions"

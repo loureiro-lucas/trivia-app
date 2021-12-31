@@ -94,7 +94,7 @@ const Feedback = ({ history }) => {
   );
   
   const handlePlayAgainButton = () => {
-    setNumberOfQuestions();
+    setNumberOfQuestions(0);
     history.push('/');
   }
 
